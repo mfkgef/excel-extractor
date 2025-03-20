@@ -1,0 +1,505 @@
+:root {
+    --mdc-theme-primary: #1976d2;
+    --mdc-theme-secondary: #ff6e40;
+    --mdc-theme-background: #f5f5f5;
+    --mdc-theme-surface: #ffffff;
+    --mdc-theme-error: #b00020;
+    --border-color: #e0e0e0;
+    --hover-bg-color: rgba(25, 118, 210, 0.05);
+    --card-spacing: 20px;
+    --main-padding: 24px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--mdc-theme-background);
+    font-family: Roboto, sans-serif;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 4;
+    background-color: var(--mdc-theme-primary);
+    color: white;
+}
+
+.main-content {
+    margin-top: 64px;
+    padding: var(--main-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-spacing);
+}
+
+/* 步骤指示器样式 */
+.steps-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--card-spacing);
+    padding: 16px;
+    background-color: var(--mdc-theme-surface);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.step-item.active .step-number {
+    background-color: var(--mdc-theme-primary);
+    color: white;
+}
+
+.step-item.completed .step-number {
+    background-color: #4caf50;
+    color: white;
+}
+
+.step-label {
+    font-size: 14px;
+    color: #757575;
+}
+
+.step-item.active .step-label,
+.step-item.completed .step-label {
+    color: #212121;
+    font-weight: 500;
+}
+
+.step-connector {
+    height: 2px;
+    width: 80px;
+    background-color: #e0e0e0;
+    margin: 0 12px;
+}
+
+.step-item.completed + .step-connector {
+    background-color: #4caf50;
+}
+
+/* 文件上传区域样式 */
+.file-upload-container {
+    width: 100%;
+}
+
+.file-upload-card {
+    padding: 24px;
+}
+
+.file-upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.file-input-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.file-select-button {
+    min-width: 120px;
+}
+
+.file-select-button .material-icons {
+    margin-right: 8px;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #616161;
+}
+
+/* 数据容器样式 */
+.data-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-spacing);
+    width: 100%;
+}
+
+.data-container.hidden {
+    display: none;
+}
+
+/* 卡片通用样式 */
+.mdc-card {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 16px;
+}
+
+/* 模板卡片样式 */
+.template-card {
+    padding: 24px;
+}
+
+.template-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.template-select-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.template-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.template-select-container label {
+    font-size: 14px;
+    color: #616161;
+}
+
+#template-select {
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* 列选择样式 */
+.data-card {
+    padding: 24px;
+}
+
+.column-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.columns-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.column-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: white;
+    transition: background-color 0.2s;
+}
+
+.column-item:hover {
+    background-color: var(--hover-bg-color);
+}
+
+.column-checkbox {
+    margin-right: 8px;
+}
+
+.column-name-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.column-name-input:disabled {
+    background-color: #f5f5f5;
+    color: #9e9e9e;
+}
+
+/* 预览卡片样式 */
+.preview-card {
+    padding: 24px;
+}
+
+.preview-controls {
+    display: flex;
+    gap: 8px;
+}
+
+/* 数据计数信息样式 */
+.data-count-info {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #616161;
+    font-style: italic;
+}
+
+/* 表格容器样式 - 修改为支持双向滚动 */
+.table-container {
+    position: relative;
+    margin-top: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
+    height: 400px; /* 固定高度以启用垂直滚动 */
+    overflow: auto; /* 允许双向滚动 */
+}
+
+#excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 100%; /* 确保表格至少占满容器宽度 */
+    table-layout: auto; /* 根据内容调整列宽 */
+}
+
+#excel-table th {
+    position: sticky;
+    top: 0;
+    background-color: #f5f5f5;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    color: #424242;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1; /* 确保粘性头部在滚动时位于内容上方 */
+    white-space: nowrap; /* 防止表头换行 */
+}
+
+#excel-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: #616161;
+    max-width: 300px; /* 限制单元格最大宽度 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超出部分显示省略号 */
+    white-space: nowrap; /* 默认不换行 */
+}
+
+#excel-table tr:hover td {
+    background-color: var(--hover-bg-color);
+    white-space: normal; /* 悬停时允许换行，完整显示内容 */
+    word-break: break-word; /* 长单词可以换行 */
+}
+
+/* 滚动条样式自定义 */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* 滚动提示箭头 */
+.scroll-hint {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(25, 118, 210, 0.8);
+    color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 2;
+    pointer-events: none;
+    animation: pulse 1.5s infinite;
+}
+
+.scroll-hint.right {
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.scroll-hint.bottom {
+    right: 50%;
+    bottom: 8px;
+    transform: translateX(50%);
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; }
+}
+
+/* 模板编辑对话框样式 */
+.template-columns-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.drag-hint {
+    font-size: 14px;
+    color: #757575;
+    margin: 0 0 8px 0;
+    font-style: italic;
+}
+
+.template-columns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 5px;
+    min-height: 100px;
+    border: 1px dashed var(--border-color);
+    border-radius: 4px;
+}
+
+.template-column-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: move;
+    user-select: none;
+    position: relative;
+}
+
+.template-column-item.dragging {
+    opacity: 0.7;
+    background-color: #e3f2fd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.template-column-item::before {
+    content: "⋮⋮";
+    color: #999;
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: move;
+}
+
+.template-column-item input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.template-column-item .material-icons {
+    cursor: pointer;
+    color: #666;
+}
+
+.template-column-item .material-icons:hover {
+    color: #d32f2f;
+}
+
+#add-template-column-btn {
+    align-self: flex-start;
+}
+
+#add-template-column-btn .material-icons {
+    margin-right: 4px;
+}
+
+/* 消息提示框样式 */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(50, 50, 50, 0.85);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 16px;
+    }
+    
+    .step-connector {
+        width: 40px;
+    }
+    
+    .template-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .template-select-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #template-select {
+        width: 100%;
+    }
+    
+    .template-buttons {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .columns-container {
+        grid-template-columns: 1fr;
+    }
+}

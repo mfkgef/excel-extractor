@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel数据提取工具</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="mdc-typography app-container">
+        <header class="mdc-top-app-bar app-bar">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <span class="mdc-top-app-bar__title">Excel数据提取工具</span>
+                </section>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <!-- 步骤指示器 -->
+            <div class="steps-container">
+                <div class="step-item active" id="step-upload">
+                    <div class="step-number">1</div>
+                    <div class="step-label">上传文件</div>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item" id="step-select">
+                    <div class="step-number">2</div>
+                    <div class="step-label">选择列</div>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item" id="step-export">
+                    <div class="step-number">3</div>
+                    <div class="step-label">导出数据</div>
+                </div>
+            </div>
+
+            <!-- 文件上传区域 -->
+            <div class="file-upload-container">
+                <div class="mdc-card file-upload-card">
+                    <div class="mdc-card__content file-upload-content">
+                        <h2 class="mdc-typography--headline6">选择Excel文件</h2>
+                        <div class="file-input-container">
+                            <button class="mdc-button mdc-button--raised file-select-button">
+                                <span class="material-icons">upload_file</span>
+                                <span class="mdc-button__label">选择文件</span>
+                            </button>
+                            <span class="file-name">未选择文件</span>
+                            <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据处理区域 -->
+            <div id="data-container" class="data-container hidden">
+                <!-- 模板管理区域 -->
+                <div class="mdc-card template-card">
+                    <div class="mdc-card__content">
+                        <div class="card-header">
+                            <h2 class="mdc-typography--headline6">模板管理</h2>
+                        </div>
+                        <div class="template-controls">
+                            <div class="template-select-container">
+                                <label for="template-select">选择模板:</label>
+                                <select class="mdc-select__native-control" id="template-select">
+                                    <option value="" disabled selected>选择模板</option>
+                                </select>
+                            </div>
+                            <div class="template-buttons">
+                                <button class="mdc-button mdc-button--outlined" id="edit-template-btn">
+                                    <span class="material-icons">edit</span>
+                                    <span class="mdc-button__label">编辑</span>
+                                </button>
+                                <button class="mdc-button mdc-button--outlined" id="delete-template-btn">
+                                    <span class="material-icons">delete</span>
+                                    <span class="mdc-button__label">删除</span>
+                                </button>
+                                <button class="mdc-button mdc-button--outlined" id="save-template-btn">
+                                    <span class="material-icons">save</span>
+                                    <span class="mdc-button__label">保存新模板</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 列选择区域 -->
+                <div class="mdc-card data-card">
+                    <div class="mdc-card__content">
+                        <div class="card-header">
+                            <h2 class="mdc-typography--headline6">选择并重命名列</h2>
+                            <div class="column-actions">
+                                <button class="mdc-button mdc-button--outlined" id="select-all-btn">
+                                    <span class="material-icons">select_all</span>
+                                    <span class="mdc-button__label">全选</span>
+                                </button>
+                                <button class="mdc-button mdc-button--outlined" id="deselect-all-btn">
+                                    <span class="material-icons">clear_all</span>
+                                    <span class="mdc-button__label">取消全选</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="column-selection">
+                            <div id="columns-container" class="columns-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据预览区域 -->
+                <div class="mdc-card preview-card">
+                    <div class="mdc-card__content">
+                        <div class="card-header">
+                            <h2 class="mdc-typography--headline6">数据预览</h2>
+                            <div class="preview-controls">
+                                <button class="mdc-button mdc-button--raised" id="export-btn" disabled>
+                                    <span class="material-icons">download</span>
+                                    <span class="mdc-button__label">导出数据</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="mdc-data-table__table" id="excel-table">
+                                <thead>
+                                    <tr class="mdc-data-table__header-row" id="table-header"></tr>
+                                </thead>
+                                <tbody class="mdc-data-table__content" id="table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 模板保存对话框 -->
+    <div class="mdc-dialog" id="save-template-dialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title">保存模板</h2>
+                <div class="mdc-dialog__content">
+                    <div class="mdc-text-field mdc-text-field--outlined" id="template-name-field">
+                        <input type="text" id="template-name" class="mdc-text-field__input">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label">模板名称</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                    </div>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">取消</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-button--raised mdc-dialog__button" data-mdc-dialog-action="accept">
+                        <span class="mdc-button__label">保存</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
+    <!-- 编辑模板对话框 -->
+    <div class="mdc-dialog" id="edit-template-dialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title">编辑模板</h2>
+                <div class="mdc-dialog__content">
+                    <div class="template-columns-container">
+                        <p class="drag-hint">提示：拖动列可以调整顺序</p>
+                        <div class="template-columns" id="template-columns"></div>
+                        <button class="mdc-button mdc-button--outlined" id="add-template-column-btn">
+                            <span class="material-icons">add</span>
+                            <span class="mdc-button__label">添加新列</span>
+                        </button>
+                    </div>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">取消</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-button--raised mdc-dialog__button" data-mdc-dialog-action="accept">
+                        <span class="mdc-button__label">保存</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="templates.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
